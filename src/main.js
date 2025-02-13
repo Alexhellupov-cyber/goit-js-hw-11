@@ -7,7 +7,13 @@ import { createGallery, clearGallery } from './js/render-functions';
 
 const form = document.querySelector('.search-form');
 const loader = document.querySelector('.loader');
+const galleryContainer = document.querySelector('.gallery');
 loader.hidden = true;
+
+const lightbox = new SimpleLightbox('.gallery a', {
+  captionsData: 'alt',
+  captionDelay: 250,
+});
 
 form.addEventListener('submit', searchImg);
 
@@ -25,7 +31,6 @@ function searchImg(event) {
 
   clearGallery();
   form.reset();
-
   loader.hidden = false;
 
   fetchImg(query)
@@ -40,10 +45,8 @@ function searchImg(event) {
       }
 
       createGallery(data.hits);
-      let lightbox = new SimpleLightbox('.gallery-link', {
-        captionsData: 'alt',
-        captionDelay: 250,
-      });
+
+      // Оновлюємо lightbox після додавання нових елементів
       lightbox.refresh();
     })
     .catch(error => {
